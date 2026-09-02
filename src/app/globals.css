@@ -1,26 +1,73 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
+@theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  
+  --font-sans: var(--font-inter);
 }
 
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #ffffff;
+    --foreground: #020617; /* Slate 950 */
+    --card: #ffffff;
+    --card-foreground: #020617;
+    --border: #e2e8f0; /* Slate 200 */
+    
+    --primary: #3b82f6; /* Blue 500 */
+    --primary-foreground: #ffffff;
+    --secondary: #8b5cf6; /* Violet 500 */
+    --secondary-foreground: #ffffff;
+    --accent: #06b6d4; /* Cyan 500 */
+    --accent-foreground: #ffffff;
+  }
+  
+  .dark {
+    --background: #020617; /* Very deep dark */
+    --foreground: #f8fafc; /* Slate 50 */
+    --card: rgba(15, 23, 42, 0.6); /* Glassmorphic card base */
+    --card-foreground: #f8fafc;
+    --border: rgba(255, 255, 255, 0.1);
+    
+    --primary: #3b82f6; 
+    --primary-foreground: #ffffff;
+    --secondary: #8b5cf6; 
+    --secondary-foreground: #ffffff;
+    --accent: #06b6d4;
+    --accent-foreground: #020617;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-primary-foreground;
+  }
+  
+  /* Smooth Scroll */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Glassmorphism utilities */
+  .glass {
+    @apply bg-card backdrop-blur-md border border-border shadow-lg;
+  }
+  
+  /* Text gradient utility */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-secondary to-accent;
+  }
 }
