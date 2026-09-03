@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/Button"
 import { ThemeToggle } from "@/components/ui/ThemeToggle"
+import { CommandMenu } from "@/components/ui/CommandMenu"
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -76,7 +77,8 @@ export function Navbar() {
                 </li>
               ))}
             </ul>
-            <div className="flex items-center gap-4 ml-4 pl-4 border-l">
+            <div className="flex items-center gap-4 ml-4 pl-4 border-l border-border">
+              <CommandMenu />
               <ThemeToggle />
               <Button>Start a Project</Button>
             </div>
