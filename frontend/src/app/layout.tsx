@@ -8,6 +8,8 @@ const inter = Inter({
   subsets: ["latin"],
 });
 
+import { AuthProvider } from "@/context/AuthContext";
+
 export const metadata: Metadata = {
   title: "Nurmasters Technology Solutions | AI & Software Engineering",
   description: "Building intelligent products and modern digital experiences. We design intelligent products, engineer powerful software, and turn ambitious ideas into scalable digital experiences.",
@@ -31,7 +33,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>
