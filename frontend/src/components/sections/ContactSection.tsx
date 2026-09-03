@@ -10,15 +10,40 @@ export function ContactSection() {
   const [submitted, setSubmitted] = React.useState(false)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsSubmitting(true)
-    // Simulate API call
-    setTimeout(() => {
+    
+    const formData = new FormData(e.currentTarget)
+    const data = {
+      name: formData.get('name'),
+      email: formData.get('email'),
+      company: formData.get('company'),
+      projectType: formData.get('projectType'),
+      budget: formData.get('budget'),
+      message: formData.get('message'),
+    }
+
+    try {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://ntspl.onrender.com'
+      const response = await fetch(`${apiUrl}/api/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+
+      if (response.ok) {
+        setSubmitted(true)
+        setTimeout(() => setSubmitted(false), 5000)
+      } else {
+        alert("Something went wrong. Please try again.")
+      }
+    } catch (error) {
+      console.error("Error submitting contact form:", error)
+      alert("Something went wrong. Please try again.")
+    } finally {
       setIsSubmitting(false)
-      setSubmitted(true)
-      setTimeout(() => setSubmitted(false), 5000)
-    }, 1500)
+    }
   }
 
   return (
@@ -49,24 +74,24 @@ export function ContactSection() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-semibold">Name</label>
-                  <input required type="text" className="bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors" placeholder="John Doe" />
+                  <input name="name" required type="text" className="bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors" placeholder="John Doe" />
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-semibold">Email</label>
-                  <input required type="email" className="bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors" placeholder="john@company.com" />
+                  <input name="email" required type="email" className="bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors" placeholder="john@company.com" />
                 </div>
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold">Company</label>
-                <input type="text" className="bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors" placeholder="Your Company Name" />
+                <input name="company" type="text" className="bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors" placeholder="Your Company Name" />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-semibold">Project Type</label>
-                  <select required className="bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors appearance-none">
-                    <option value="" disabled selected>Select an option</option>
+                  <select name="projectType" defaultValue="" required className="bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors appearance-none">
+                    <option value="" disabled>Select an option</option>
                     <option value="ai">AI Product</option>
                     <option value="web">Web Application</option>
                     <option value="software">Software Development</option>
@@ -77,8 +102,8 @@ export function ContactSection() {
                 </div>
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-semibold">Budget Range</label>
-                  <select required className="bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors appearance-none">
-                    <option value="" disabled selected>Select budget</option>
+                  <select name="budget" defaultValue="" required className="bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors appearance-none">
+                    <option value="" disabled>Select budget</option>
                     <option value="small">Under $10,000</option>
                     <option value="medium">$10,000 - $50,000</option>
                     <option value="large">$50,000 - $100,000</option>
@@ -89,7 +114,7 @@ export function ContactSection() {
 
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-semibold">Message / Project Details</label>
-                <textarea required rows={5} className="bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors resize-none" placeholder="Describe your idea, requirements, and timeline..." />
+                <textarea name="message" required rows={5} className="bg-background border border-border rounded-lg px-4 py-3 focus:outline-none focus:border-primary transition-colors resize-none" placeholder="Describe your idea, requirements, and timeline..." />
               </div>
 
               <Button type="submit" size="lg" className="w-full mt-4 h-12 text-base" disabled={isSubmitting}>
