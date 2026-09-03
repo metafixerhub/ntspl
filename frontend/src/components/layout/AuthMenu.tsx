@@ -5,7 +5,8 @@ import { useAuth } from "@/context/AuthContext"
 import { Button } from "@/components/ui/Button"
 import { ThemeToggle } from "@/components/ui/ThemeToggle"
 import { AuthModal } from "@/components/ui/AuthModal"
-import { LogOut, User as UserIcon } from "lucide-react"
+import { LogOut, User as UserIcon, LayoutDashboard } from "lucide-react"
+import Link from "next/link"
 
 export function AuthMenu() {
   const { user, loading, signOut } = useAuth()
@@ -47,6 +48,13 @@ export function AuthMenu() {
                   <p className="text-sm font-medium truncate">{user.displayName}</p>
                   <p className="text-xs text-muted-foreground truncate">{user.email}</p>
                 </div>
+                <Link
+                  href="/dashboard"
+                  className="flex items-center gap-2 px-3 py-2 text-sm hover:bg-muted rounded-md transition-colors text-left"
+                >
+                  <LayoutDashboard className="w-4 h-4 text-muted-foreground" />
+                  Dashboard
+                </Link>
                 <button
                   onClick={() => signOut()}
                   className="flex items-center gap-2 px-3 py-2 text-sm text-red-500 hover:bg-red-500/10 rounded-md transition-colors text-left"
